@@ -1,0 +1,59 @@
+doctype html
+html(lang='en', ng-app='paramsingh')
+  head
+    title Lists Of Test Cases
+    link(href='../node_modules/bootstrap/dist/css/bootstrap.min.css', rel='stylesheet')
+    link(href='main.css', rel='stylesheet')
+  body
+    nav.navbar.navbar-inverse.navbar-fixed-top
+      .container
+        .navbar-header
+          a.navbar-brand(href='/')
+            | Lists Of Test Cases
+    .container.main-content(ng-controller='TestCaseController', ng-model='testCases')
+      .row
+        .col-md-12
+          form.form-inline.well.well-sm
+            span.glyphicon.glyphicon-search
+            .form-group
+              input#testCaseId.form-control(type='text', ng-model='search', placeholder='Search test cases...')
+            span.glyphicon.glyphicon-sort-by-attributes
+            .form-group
+              select.form-control(ng-model='order')
+                option(value='testCaseId') Test Case Id (ASC)
+                option(value='-testCaseId') Test Case Id (DEC)
+                option(value='testCategory') Test Category (ASC)
+                option(value='-testCategory') Test Category (DEC)
+      .row
+        .col-md-12
+          table.table.table-bordered
+            tr
+              th #
+              th
+                | Test Case Id
+                span.glyphicon.glyphicon-menu-up(ng-click="order = 'testCaseId'")
+                span.glyphicon.glyphicon-menu-down(ng-click="order = '-testCaseId'")
+              th
+                | Test Category
+                span.glyphicon.glyphicon-menu-up(ng-click="order = 'testCategory'")
+                span.glyphicon.glyphicon-menu-down(ng-click="order = '-testCategory'")
+              th Description
+              th Run
+            tr(ng-repeat='testCase in filteredTestCases = (testCases | filter:sensitiveSearch | orderBy:order)', ng-style="{\
+            'background-color': $index == selectedIndex ? 'lightgray' : ''\
+            }", ng-click='selectTestCase(testCase, $index)')
+              td {{ $index + 1 }}
+              td {{ testCase.testCaseId }}
+              td {{ testCase.testCategory }}
+              td {{ testCase.description }}
+              td
+                input(type='checkbox', ng-model='testCase.includeInExecution', value='testCase.includeInExecution')
+            tr(ng-show='filteredTestCases.length == 0')
+              td(colspan='12')
+                .alert.alert-info
+                  p.text-center No results found for search term '{{ search }}'
+      input(type='button', value='Run Test Cases', ng-click='runTestCases(testCases)')
+
+
+    script(src='../node_modules/angular/angular.min.js')
+    script(src='/main.js')
