@@ -1,4 +1,6 @@
 var Horseman = require('node-horseman');
+var logFile = require('C:\\git\\projects\\ebTestAuto\\common\\sendLogs.js');
+
 // Horseman
 function HorsemanAdaptee() {
     this.run = function(testData) {
@@ -12,6 +14,11 @@ function HorsemanAdaptee() {
             .count('div.g')
             .log() // prints out the number of results
             .screenshot('snapshots/' + testData.testCaseId + '.png')
+            .then(function() {
+                    //log
+                    logFile.log(testData);
+                    //console.log('completed ' + testData)
+            })
             .close();
         return "horseman - Test Completed for - " + testData.testCaseId;
     };
@@ -42,11 +49,11 @@ function TestFrameworkAdapter(testData) {
 }
 
 
-this.run = function(testData){
+this.run = function(testData) {
     var count = 0;
-    console.log(testData);
+    //console.log(testData);
 
-var testCases = JSON.parse(testData);
+    var testCases = JSON.parse(testData);
 
     // var adapter = new TestFrameworkAdapter(testCases);
     // adapter.run();
