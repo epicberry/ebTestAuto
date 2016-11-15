@@ -1,5 +1,6 @@
 var Horseman = require('node-horseman');
-var logFile = require('C:\\git\\projects\\ebTestAuto\\common\\sendLogs.js');
+var logFile = require('../common/sendLogs.js');
+// var logFile = require('C:\\git\\projects\\ebTestAuto\\common\\sendLogs.js');
 
 // Horseman
 function HorsemanAdaptee() {
