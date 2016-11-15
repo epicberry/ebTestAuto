@@ -1,10 +1,13 @@
 var Horseman = require('node-horseman');
 var logFile = require('../common/sendLogs.js');
-// var logFile = require('C:\\git\\projects\\ebTestAuto\\common\\sendLogs.js');
+//var logFile = require('C:\\git\\projects\\ebTestAuto\\common\\sendLogs.js');
 
 // Horseman
 function HorsemanAdaptee() {
     this.run = function(testData) {
+        //console.time(testData.testCaseId);
+        //var t0 = performance.now();
+        var start = new Date().getTime();
         new Horseman()
             .userAgent(testData.basic.browser)
             .open(testData.basic.url)
@@ -16,9 +19,15 @@ function HorsemanAdaptee() {
             .log() // prints out the number of results
             .screenshot('snapshots/' + testData.testCaseId + '.png')
             .then(function() {
-                    //log
-                    logFile.log(testData);
-                    //console.log('completed ' + testData)
+                var end = new Date().getTime();
+                var execTime = end - start;
+                //console.log('Execution time: ' + time);
+                //log
+                //logFile.log(testData,execTime);
+
+                logFile.log('project1.' + testData.testCategory + '.' +testData.testCaseId + ' ' + execTime);
+                //logFile.log(testData.testCategory + testData.testCaseId + ' ' + execTime);
+
             })
             .close();
         return "horseman - Test Completed for - " + testData.testCaseId;
