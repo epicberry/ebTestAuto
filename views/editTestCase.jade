@@ -1,0 +1,45 @@
+html
+  head
+    link(href='../node_modules/bootstrap/dist/css/bootstrap.min.css', rel='stylesheet')
+    link(rel='stylesheet', type='text/css', href='../node_modules/jsoneditor/dist/jsoneditor.min.css')
+    script(src='../node_modules/angular/angular.min.js')
+
+    script.
+      var json = {"Array": [1, 2, 3], "Boolean": true, "Null": null, "Number": 123, "Object": {"a": "b", "c": "d"}, "String": "Hello World"};
+      angular.module('ngApp', ['ng.jsoneditor']).controller('ngCtrl', function ($scope) {
+      $scope.obj = {data: json, options: {mode: 'tree'}};
+      $scope.onLoad = function (instance) {
+      instance.expandAll();
+      };
+      $scope.changeData = function () {
+      $scope.obj.data = {foo: 'bar'};
+      };
+      $scope.changeOptions = function () {
+      $scope.obj.options.mode = $scope.obj.options.mode == 'tree' ? 'code' : 'tree';
+      };
+      //other
+      $scope.pretty = function (obj) {
+      return angular.toJson(obj, true);
+      }
+      });
+  body(ng-app='ngApp', ng-controller='ngCtrl')
+      .container.main-content()
+        .row
+          .col-md-12
+          table.table.table-bordered
+            tr
+            td(colspan='6')
+              div(ng-jsoneditor='onLoad', ng-model='obj.data', options='obj.options', style='height:700px;')
+              button.btn.btn-primary(type='button', ng-click='changeData()')
+                i.fa.fa-check-circle
+                |  change data
+              button.btn.btn-primary(type='button', ng-click='changeOptions()')
+                i.fa.fa-check-circle
+                |  change options
+              td(colspan='6')
+                b Live Preview
+                pre(style='height:680px;').
+                  {{pretty(obj.data)}}
+
+      script(src='../node_modules/jsoneditor/dist/jsoneditor.min.js')
+      script(src='../node_modules/ng-jsoneditor/ng-jsoneditor.js')

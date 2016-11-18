@@ -1,0 +1,38 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="./node_modules/jsoneditor/dist/jsoneditor.min.css"/>
+  <script src="./node_modules/angular/angular.min.js"></script>
+</head>
+<body>
+  <script>
+  var json = {"Array": [1, 2, 3], "Boolean": true, "Null": null, "Number": 123, "Object": {"a": "b", "c": "d"}, "String": "Hello World"};
+
+     angular.module('ngApp', ['ng.jsoneditor']).controller('ngCtrl', function ($scope) {
+         $scope.obj = {data: json, options: {mode: 'tree'}};
+         $scope.onLoad = function (instance) {
+             instance.expandAll();
+         };
+         $scope.changeData = function () {
+             $scope.obj.data = {foo: 'bar'};
+         };
+         $scope.changeOptions = function () {
+             $scope.obj.options.mode = $scope.obj.options.mode == 'tree' ? 'code' : 'tree';
+         };
+
+         //other
+         $scope.pretty = function (obj) {
+             return angular.toJson(obj, true);
+         }
+     });
+  </script>
+
+  <div ng-app="ngApp" ng-controller="ngCtrl">
+    <div ng-jsoneditor="onLoad" ng-model="obj.data" options="obj.options" style="width: 400px; height: 300px;"></div>
+    <button type="button" class="btn btn-primary" ng-click="changeData()"><i class="fa fa-check-circle"></i> change data</button>
+    <button type="button" class="btn btn-primary" ng-click="changeOptions()"><i class="fa fa-check-circle"></i> change options</button>
+    <pre>{{pretty(obj.data)}}</pre>
+
+    <script src="./node_modules/jsoneditor/dist/jsoneditor.min.js"></script>
+    <script src="./node_modules/ng-jsoneditor/ng-jsoneditor.js"></script>
+</body>
+</html>

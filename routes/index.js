@@ -15,6 +15,12 @@ router.get('/info', function(req, res, next) {
     });
 });
 
+router.get('/editTestCase/:testCaseId', function(req, res, next) {
+    res.render('editTestCase', {
+        title: 'Edit Test Case'
+    });
+});
+
 router.get('/testResults', function(req, res, next) {
     // res.render('testResults', {
     //     title: 'Test Results'

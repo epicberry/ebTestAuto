@@ -16,7 +16,9 @@
     "express": "~4.14.0",
     "graphite": "0.0.7",
     "jade": "~1.11.0",
+    "jsoneditor": "^5.5.10",
     "morgan": "~1.7.0",
+    "ng-jsoneditor": "^1.0.0",
     "node-horseman": "^3.2.0",
     "serve-favicon": "~2.3.0"
   },
