@@ -11,8 +11,8 @@ app.controller('TestCaseController', function($scope, $http, $window) {
 
     $http({
         method: 'GET',
-        //url: 'http://192.169.179.82:1111/data/all'
-        url: 'http://localhost:1111/data/all'
+        url: 'http://192.169.179.82:1111/data/all'
+        //url: 'http://localhost:1111/data/all'
     }).then(function successCallback(response) {
         // this callback will be called asynchronously
         // when the response is available
