@@ -35,54 +35,56 @@ function CreateFiles(testCases){
   });
 }
 
-function CreateProtractorString(testCase){
-  //return "describe('Amazon shopping', function() { it('should open an item', function() { browser.get('https://www.amazon.com'); element(by.css('[id=\"twotabsearchtextbox\"]')).sendKeys('"+testCase.testSteps[1].value+"'); element(by.css('[value=\"Go\"]')).click();   }); });"
-  var strTestFlow = "describe('" + testCase.description + "' , function() { it('" + testCase.description + "', function() {";
-  testCase.testSteps.forEach(function(testStep) {
-    switch(testStep.type) {
-        case 'navigate':
-            strTestFlow += "\n browser.get('" + testStep.url + "');"
-            break;
-        case 'input':
-            strTestFlow += "\n element(by.css('[" + testStep.elementName + "]')).sendKeys('" + testStep.value + "');";
-            break;
-        case 'click':
-            strTestFlow += "\n element(by.css('[" + testStep.elementName + "]')).click();";
-            break;
-        default:
-            console.log('In default');
-      }
-  });
-  strTestFlow += "\n }); \n });";
-  return strTestFlow;
-}
-
 // function CreateProtractorString(testCase){
 //   //return "describe('Amazon shopping', function() { it('should open an item', function() { browser.get('https://www.amazon.com'); element(by.css('[id=\"twotabsearchtextbox\"]')).sendKeys('"+testCase.testSteps[1].value+"'); element(by.css('[value=\"Go\"]')).click();   }); });"
 //   var strTestFlow = "describe('" + testCase.description + "' , function() { it('" + testCase.description + "', function() {";
-//   var strEndFlow = "";
 //   testCase.testSteps.forEach(function(testStep) {
 //     switch(testStep.type) {
 //         case 'navigate':
-//             strTestFlow += "\n browser.get('" + testStep.url + "').then(function(){"
-//             strEndFlow += "\n}, function(err){\n throw new Error('Error occurred'); \n});";
+//             strTestFlow += "\n browser.get('" + testStep.url + "');"
 //             break;
 //         case 'input':
-//             strTestFlow += "\n element(by.css('[" + testStep.elementName + "]')).sendKeys('" + testStep.value + "').then(function(){";
-//             strEndFlow += "\n}, function(err){\n throw new Error('Error occurred'); \n});";
+//             strTestFlow += "\n element(by.css('[" + testStep.elementName + "]')).sendKeys('" + testStep.value + "');";
 //             break;
 //         case 'click':
-//             strTestFlow += "\n element(by.css('[" + testStep.elementName + "]')).click().then(function(){";
-//             strEndFlow += "\n}, function(err){\n throw new Error('Error occurred'); \n});";
+//             strTestFlow += "\n element(by.css('[" + testStep.elementName + "]')).click();";
 //             break;
 //         default:
 //             console.log('In default');
 //       }
 //   });
-//   strTestFlow += strEndFlow + "\n }); \n });";
-//
+//   strTestFlow += "\n }); \n });";
 //   return strTestFlow;
 // }
+
+function CreateProtractorString(testCase){
+  //return "describe('Amazon shopping', function() { it('should open an item', function() { browser.get('https://www.amazon.com'); element(by.css('[id=\"twotabsearchtextbox\"]')).sendKeys('"+testCase.testSteps[1].value+"'); element(by.css('[value=\"Go\"]')).click();   }); });"
+  var strTestFlow = "var logFile = require('../common/sendLogs.js'); \n describe('" + testCase.description + "' , function() { it('" + testCase.description + "', function() {";
+  var logEntry = "logFile.log('Project1" + "." + testCase.testCategory + "." + testCase.testCaseId +" ";
+  var strEndFlow = "";
+  testCase.testSteps.forEach(function(testStep) {
+    switch(testStep.type) {
+        case 'navigate':
+            strTestFlow += "\n browser.get('" + testStep.url + "').then(function(){";
+            strEndFlow += "\n}, function(err){\n " + logEntry + " fail'); " + " \n throw new Error('Error occurred'); \n});";
+            break;
+        case 'input':
+            strTestFlow += "\n element(by.css('[" + testStep.elementName + "]')).sendKeys('" + testStep.value + "').then(function(){";
+            strEndFlow += "\n}, function(err){\n " + logEntry + " fail'); " + " \n throw new Error('Error occurred'); \n});";
+            break;
+        case 'click':
+            strTestFlow += "\n element(by.css('[" + testStep.elementName + "]')).click().then(function(){";
+            strEndFlow += "\n}, function(err){\n " + logEntry + " fail'); " + " \n throw new Error('Error occurred'); \n});";
+            break;
+        default:
+            console.log('In default');
+      }
+  });
+  logEntry += " pass');";
+  strTestFlow += "\n" + logEntry + strEndFlow + "\n }); \n });";
+
+  return strTestFlow;
+}
 
 // //if body is sent in chunks
 // request.on('response', function (response) {
