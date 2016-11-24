@@ -66,15 +66,20 @@ function CreateProtractorString(testCase){
     switch(testStep.type) {
         case 'navigate':
             strTestFlow += "\n browser.get('" + testStep.url + "').then(function(){";
-            strEndFlow += "\n}, function(err){\n " + logEntry + "\"failure\"); " + " \n throw new Error('Error occurred'); \n});";
+            strEndFlow += "\n}, function(err){\n " + logEntry + "\"failure\"); " + " \n console.log(err); \n throw new Error('Error occurred'); \n});";
             break;
         case 'input':
-            strTestFlow += "\n element(by.css('[" + testStep.elementName + "]')).sendKeys('" + testStep.value + "').then(function(){";
-            strEndFlow += "\n}, function(err){\n " + logEntry + "\"failure\"); " + " \n throw new Error('Error occurred'); \n});";
+            // strTestFlow += "\n element(by."+testStep.selectBy+"('[" + testStep.elementName + "]')).sendKeys('" + testStep.value + "').then(function(){";
+            strTestFlow += "\n element(by."+testStep.selectBy+"('" + testStep.elementName + "')).sendKeys('" + testStep.value + "').then(function(){";
+            strEndFlow += "\n}, function(err){\n " + logEntry + "\"failure\"); " + " \n console.log(err); \n throw new Error('Error occurred'); \n});";
             break;
         case 'click':
-            strTestFlow += "\n element(by.css('[" + testStep.elementName + "]')).click().then(function(){";
-            strEndFlow += "\n}, function(err){\n " + logEntry + "\"failure\"); " + " \n throw new Error('Error occurred'); \n});";
+            // strTestFlow += "\n element(by." + testStep.selectBy + "('[" + testStep.elementName + "]')).click().then(function(){";
+            strTestFlow += "\n element(by." + testStep.selectBy + "('" + testStep.elementName + "')).click().then(function(){";
+            strEndFlow += "\n}, function(err){\n " + logEntry + "\"failure\"); " + " \n console.log(err); \n throw new Error('Error occurred'); \n});";
+            break;
+        case 'sleep':
+            strTestFlow += "\n browser.sleep(" + testStep.timeInMilliSecs + "); ";
             break;
         default:
             console.log('In default');
