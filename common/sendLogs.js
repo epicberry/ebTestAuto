@@ -17,15 +17,16 @@ function GraphiteAdaptee(){
 }
 
 function ELKLogitAdaptee(){
-  // console.log('Reached Logging using logit');
+  console.log('Reached Logging using logit');
   this.log = function(testName, status) {
     var logit = require('node-logitio');
     logit.init('489813f6-a692-4394-9573-9e291ab00a6f', { logToConsole: true });
     //logit.log('Logged by Param');
     var testDetails = testName.split(".");
     //console.log(testDetails[0] + '--' + testDetails[1] + '--' + testDetails[2]);
+    console.log('Logging in ' + testName + ' project ' + testDetails[0] + ' category ' + testDetails[1] + ' testCaseName ' + testDetails[2] + ' status ' + status );
     logit.log(testName, {'project': testDetails[0], 'category': testDetails[1], 'testCaseName': testDetails[2], 'status': status} );
-    // console.log('logged!!!!!');
+    console.log('logged!!!!!');
   };
 }
 
