@@ -60,27 +60,27 @@ function CreateFiles(testCases){
 function CreateProtractorString(testCase){
   //return "describe('Amazon shopping', function() { it('should open an item', function() { browser.get('https://www.amazon.com'); element(by.css('[id=\"twotabsearchtextbox\"]')).sendKeys('"+testCase.testSteps[1].value+"'); element(by.css('[value=\"Go\"]')).click();   }); });"
   var strTestFlow = "var logFile = require('../common/sendLogs.js'); \n describe('" + testCase.description + "' , function() { it('" + testCase.description + "', function() {";
-  var logEntry = "logFile.log('Project1" + "." + testCase.testCategory + "." + testCase.testCaseId +" ";
+  var logEntry = "logFile.log(\"project1" + "." + testCase.testCategory + "." + testCase.testCaseId + "\", ";
   var strEndFlow = "";
   testCase.testSteps.forEach(function(testStep) {
     switch(testStep.type) {
         case 'navigate':
             strTestFlow += "\n browser.get('" + testStep.url + "').then(function(){";
-            strEndFlow += "\n}, function(err){\n " + logEntry + " fail'); " + " \n throw new Error('Error occurred'); \n});";
+            strEndFlow += "\n}, function(err){\n " + logEntry + "\"failure\"); " + " \n throw new Error('Error occurred'); \n});";
             break;
         case 'input':
             strTestFlow += "\n element(by.css('[" + testStep.elementName + "]')).sendKeys('" + testStep.value + "').then(function(){";
-            strEndFlow += "\n}, function(err){\n " + logEntry + " fail'); " + " \n throw new Error('Error occurred'); \n});";
+            strEndFlow += "\n}, function(err){\n " + logEntry + "\"failure\"); " + " \n throw new Error('Error occurred'); \n});";
             break;
         case 'click':
             strTestFlow += "\n element(by.css('[" + testStep.elementName + "]')).click().then(function(){";
-            strEndFlow += "\n}, function(err){\n " + logEntry + " fail'); " + " \n throw new Error('Error occurred'); \n});";
+            strEndFlow += "\n}, function(err){\n " + logEntry + "\"failure\"); " + " \n throw new Error('Error occurred'); \n});";
             break;
         default:
             console.log('In default');
       }
   });
-  logEntry += " pass');";
+  logEntry += "\"passed\");";
   strTestFlow += "\n" + logEntry + strEndFlow + "\n }); \n });";
 
   return strTestFlow;

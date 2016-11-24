@@ -22,7 +22,9 @@
     "ng-jsoneditor": "^1.0.0",
     "node-horseman": "^3.2.0",
     "selenium-webdriver": "3.0.0-beta-2",
-    "serve-favicon": "~2.3.0"
+    "serve-favicon": "~2.3.0",
+    "winston": "^2.3.0",
+    "winston-logsene": "^1.2.1"
   },
   "repository": {
     "type": "git",
