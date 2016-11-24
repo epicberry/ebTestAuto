@@ -21,6 +21,7 @@
     "morgan": "~1.7.0",
     "ng-jsoneditor": "^1.0.0",
     "node-horseman": "^3.2.0",
+    "node-logitio": "^1.0.3",
     "selenium-webdriver": "3.0.0-beta-2",
     "serve-favicon": "~2.3.0",
     "winston": "^2.3.0",
