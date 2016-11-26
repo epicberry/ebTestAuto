@@ -5,20 +5,42 @@ PrepareTests();
 function PrepareTests(){
   var options = {
     host: '192.169.179.82',
+    //host: 'localhost',
     port: 1111,
     path: '/data/all'
   };
 
+  // console.log('Connecting to DB');
+  // console.log(options);
+
+
   http.get(options, function(res){
+    var body = '';
     res.on('data', function(chunk){
       //console.log(JSON.parse(chunk));
-      CreateFiles(JSON.parse(chunk));
+      //CreateFiles(JSON.parse(chunk));
+      body += chunk;
+    });
+    res.on('end', function () {
+      // console.log(JSON.parse(body));
+      CreateFiles(JSON.parse(body));
     });
   }).on("error", function(e){
     console.log("Got error: " + e.message);
   });
 }
 
+// //if body is sent in chunks
+// request.on('response', function (response) {
+//   var body = '';
+//   response.on('data', function (chunk) {
+//     body += chunk;
+//   });
+//   response.on('end', function () {
+//     console.log('BODY: ' + body);
+//   });
+// });
+// request.end();
 
 function CreateFiles(testCases){
   testCases.forEach(function(testCase) {
@@ -65,22 +87,25 @@ function CreateProtractorString(testCase){
   testCase.testSteps.forEach(function(testStep) {
     switch(testStep.type) {
         case 'navigate':
-            strTestFlow += "\n browser.get('" + testStep.url + "').then(function(){";
-            strEndFlow += "\n}, function(err){\n " + logEntry + "\"failure\"); " + " \n console.log(err); \n throw new Error('Error occurred'); \n});";
+            strTestFlow += "\n \t browser.get('" + testStep.url + "').then(function(){";
+            strEndFlow += "\n}, function(err){\n \t " + logEntry + "\"failure\"); " + " \n console.log(err); \n throw new Error('Error occurred'); \n});";
             break;
         case 'input':
             // strTestFlow += "\n element(by."+testStep.selectBy+"('[" + testStep.elementName + "]')).sendKeys('" + testStep.value + "').then(function(){";
-            strTestFlow += "\n element(by."+testStep.selectBy+"('" + testStep.elementName + "')).sendKeys('" + testStep.value + "').then(function(){";
-            strEndFlow += "\n}, function(err){\n " + logEntry + "\"failure\"); " + " \n console.log(err); \n throw new Error('Error occurred'); \n});";
+            strTestFlow += "\n \t element(by."+testStep.selectBy+"('" + testStep.elementName + "')).sendKeys('" + testStep.value + "').then(function(){";
+            strEndFlow += "\n}, function(err){\n \t " + logEntry + "\"failure\"); " + " \n console.log(err); \n throw new Error('Error occurred'); \n});";
             break;
         case 'click':
             // strTestFlow += "\n element(by." + testStep.selectBy + "('[" + testStep.elementName + "]')).click().then(function(){";
-            strTestFlow += "\n element(by." + testStep.selectBy + "('" + testStep.elementName + "')).click().then(function(){";
-            strEndFlow += "\n}, function(err){\n " + logEntry + "\"failure\"); " + " \n console.log(err); \n throw new Error('Error occurred'); \n});";
+            strTestFlow += "\n \t element(by." + testStep.selectBy + "('" + testStep.elementName + "')).click().then(function(){";
+            strEndFlow += "\n}, function(err){\n \t " + logEntry + "\"failure\"); " + " \n console.log(err); \n throw new Error('Error occurred'); \n});";
             break;
         case 'sleep':
             strTestFlow += "\n browser.sleep(" + testStep.timeInMilliSecs + "); ";
             break;
+        // case 'dbCall':
+        //     strTestFlow += "\n browser.sleep(" + testStep.timeInMilliSecs + "); ";
+        //     break;
         default:
             console.log('In default');
       }
